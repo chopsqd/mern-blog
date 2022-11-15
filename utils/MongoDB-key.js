@@ -1,0 +1,1 @@
+export const key = 'mongodb+srv://admin:12345@cluster0.f6mplrp.mongodb.net/blog?retryWrites=true&w=majority'
