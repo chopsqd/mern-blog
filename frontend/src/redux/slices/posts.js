@@ -6,10 +6,27 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     return data
 })
 
-export const fetchTags= createAsyncThunk('posts/fetchTags', async () => {
+export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
     const {data} = await axios.get('/tags')
     return data
 })
+
+export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (id) => await axios.delete(`/posts/${id}`))
+
+const pending = (state) => {
+    state.posts.items = []
+    state.posts.status = 'loading'
+}
+
+const fulfilled = (state, action) => {
+    state.posts.items = action.payload
+    state.posts.status = 'loaded'
+}
+
+const rejected = (state) => {
+    state.posts.items = []
+    state.posts.status = 'error'
+}
 
 const initialState = {
     posts: {
@@ -30,33 +47,21 @@ const postsSlice = createSlice({
 
         // ===== fetchPosts ===== //
 
-        [fetchPosts.pending]: (state) => {
-            state.posts.items = []
-            state.posts.status = 'loading'
-        },
-        [fetchPosts.fulfilled]: (state, action) => {
-            state.posts.items = action.payload
-            state.posts.status = 'loaded'
-        },
-        [fetchPosts.rejected]: (state) => {
-            state.posts.items = []
-            state.posts.status = 'error'
-        },
+        [fetchPosts.pending]: pending,
+        [fetchPosts.fulfilled]: fulfilled,
+        [fetchPosts.rejected]: rejected,
 
         // ===== fetchTags ===== //
 
-        [fetchTags.pending]: (state) => {
-            state.tags.items = []
-            state.tags.status = 'loading'
-        },
-        [fetchTags.fulfilled]: (state, action) => {
-            state.tags.items = action.payload
-            state.tags.status = 'loaded'
-        },
-        [fetchTags.rejected]: (state) => {
-            state.tags.items = []
-            state.tags.status = 'error'
-        },
+        [fetchTags.pending]: pending,
+        [fetchTags.fulfilled]: fulfilled,
+        [fetchTags.rejected]: rejected,
+
+        // ===== fetchRemovePost ===== //
+
+        [fetchRemovePost.pending]: (state, action) => {
+            state.posts.items = state.posts.items.filter(post => post._id !== action.meta.arg)
+        }
     }
 })
 
