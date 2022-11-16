@@ -21,6 +21,21 @@ const initialState = {
     status: 'loading'
 }
 
+const pending = (state) => {
+    state.data = null
+    state.status = 'loading'
+}
+
+const fulfilled = (state, action) => {
+    state.data = action.payload
+    state.status = 'loaded'
+}
+
+const rejected = (state) => {
+    state.data = null
+    state.status = 'error'
+}
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -33,48 +48,21 @@ const authSlice = createSlice({
 
         // ===== fetchAuth ===== //
 
-        [fetchAuth.pending]: (state) => {
-            state.data = null
-            state.status = 'loading'
-        },
-        [fetchAuth.fulfilled]: (state, action) => {
-            state.data = action.payload
-            state.status = 'loaded'
-        },
-        [fetchAuth.rejected]: (state) => {
-            state.data = null
-            state.status = 'error'
-        },
+        [fetchAuth.pending]: pending,
+        [fetchAuth.fulfilled]: fulfilled,
+        [fetchAuth.rejected]: rejected,
 
         // ===== fetchAuthMe ===== //
 
-        [fetchAuthMe.pending]: (state) => {
-            state.data = null
-            state.status = 'loading'
-        },
-        [fetchAuthMe.fulfilled]: (state, action) => {
-            state.data = action.payload
-            state.status = 'loaded'
-        },
-        [fetchAuthMe.rejected]: (state) => {
-            state.data = null
-            state.status = 'error'
-        },
+        [fetchAuthMe.pending]: pending,
+        [fetchAuthMe.fulfilled]: fulfilled,
+        [fetchAuthMe.rejected]: rejected,
 
         // ===== fetchRegister ===== //
 
-        [fetchRegister.pending]: (state) => {
-            state.data = null
-            state.status = 'loading'
-        },
-        [fetchRegister.fulfilled]: (state, action) => {
-            state.data = action.payload
-            state.status = 'loaded'
-        },
-        [fetchRegister.rejected]: (state) => {
-            state.data = null
-            state.status = 'error'
-        },
+        [fetchRegister.pending]: pending,
+        [fetchRegister.fulfilled]: fulfilled,
+        [fetchRegister.rejected]: rejected,
     }
 })
 
