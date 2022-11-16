@@ -4,7 +4,6 @@ import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 import {useDispatch, useSelector} from "react-redux";
 
-import axios from '../axios'
 import {Post} from '../components/Post';
 import {TagsBlock} from '../components/TagsBlock';
 import {CommentsBlock} from '../components/CommentsBlock';
