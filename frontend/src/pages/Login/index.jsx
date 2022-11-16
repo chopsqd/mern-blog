@@ -14,7 +14,7 @@ export const Login = () => {
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
 
-    const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
+    const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
             email: '',
             password: ''
@@ -22,8 +22,16 @@ export const Login = () => {
         mode: 'onChange'
     })
 
-    const onSubmit = (values) => {
-        dispatch(fetchAuth(values))
+    const onSubmit = async (values) => {
+        const data = await dispatch(fetchAuth(values))
+
+        if(!data.payload) {
+            return alert('Не удалось зарегестрироваться')
+        }
+
+        if('token' in data.payload) {
+            window.localStorage.setItem('token', data.payload.token)
+        }
     }
 
     if(isAuth) {
@@ -55,6 +63,7 @@ export const Login = () => {
                     fullWidth
                 />
                 <Button
+                    disabled={!isValid}
                     type={"submit"}
                     size="large"
                     variant="contained"
