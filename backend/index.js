@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
+import cors from 'cors'
 
 import {loginValidation, postCreateValidation, registerValidation} from "./validations/validations.js";
 import {checkAuth, handleValidationErrors, key} from "./utils/index.js";
@@ -30,6 +31,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.use(express.json())
+app.use(cors())
 // Если запрос на /uploads, то проверяем содержимое статической папки uploads
 app.use('/uploads', express.static('uploads'))
 
@@ -43,6 +45,8 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
         url: `/uploads/${req.file.originalname}`
     })
 })
+
+app.get('/tags', PostController.getLastTags)
 
 app.get('/posts', PostController.getAll)
 app.get('/posts/:id', PostController.getOne)
